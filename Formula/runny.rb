@@ -8,9 +8,9 @@
 class Runny < Formula
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
-  version "0.1.0-beta.83a2f0fd"
-  url "https://github.com/bojanrajkovic/runny/releases/download/v0.1.0-beta.83a2f0fd/runny_0.1.0-beta.83a2f0fd_darwin_arm64.tar.gz"
-  sha256 "1cd441b95a577813480355c9ac51fe7712b3b72b4aa2f9a1625a89551c6ef3d0"
+  version "0.2.0-beta.57f3d402"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v0.2.0-beta.57f3d402/runny_0.2.0-beta.57f3d402_darwin_arm64.tar.gz"
+  sha256 "8648e962b523bd2f323299b31f51a5632a5323df62e4a7b8450c2f88421dff1e"
   license "MIT"
 
   depends_on :macos
