@@ -3,10 +3,10 @@
 # the next release overwrites it. version, url, and sha256 are filled in by
 # the workflow from the package step's own checksum, never a re-download.
 cask "runny-app" do
-  version "0.3.0"
-  sha256 "ae4ee409b24bc2d2ec7117871cc704834b0654f4c816db97a1817dac1cb48170"
+  version "1.0.0"
+  sha256 "b7c88aa1cb54e8591561d5c518464ff22b61f379108502eaf78d416a773cc2a7"
 
-  url "https://github.com/bojanrajkovic/runny/releases/download/v0.3.0/Runny_0.3.0.dmg"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.0.0/Runny_1.0.0.dmg"
   name "Runny"
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
@@ -22,10 +22,11 @@ cask "runny-app" do
 
   # No conflicts_with formula: here — brew PR #20499 deprecated cask→formula conflicts
   # with no replacement. The mutual-exclusion constraint lives in Formula/runny.rb instead
-  # (conflicts_with cask: "runny-app"). Adding conflicts_with formula: here emits a
-  # persistent deprecation warning; don't. The reverse direction is backstopped by the
-  # runnyctl symlink collision (brew install --cask runny-app fails loud when the formula
-  # is present — uninstall it first).
+  # (conflicts_with cask: "runny-app"). The reverse direction (formula present → cask
+  # install blocked) is enforced by the preflight below.
+  preflight do
+    odie "The `runny` formula is already installed. Run 'brew uninstall runny' first." if (HOMEBREW_PREFIX/"bin/runnyd").exist?
+  end
 
   uninstall quit:      "com.coderinserepeat.runny",      # app bundle id
             launchctl: "com.coderinserepeat.runnyd"      # per-user LaunchAgent label
