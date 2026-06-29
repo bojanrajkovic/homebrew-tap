@@ -8,48 +8,51 @@
 class Runny < Formula
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
-  version "0.2.0-beta.57f3d402"
-  url "https://github.com/bojanrajkovic/runny/releases/download/v0.2.0-beta.57f3d402/runny_0.2.0-beta.57f3d402_darwin_arm64.tar.gz"
-  sha256 "8648e962b523bd2f323299b31f51a5632a5323df62e4a7b8450c2f88421dff1e"
+  version "0.3.0"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v0.3.0/runny_0.3.0_darwin_arm64.tar.gz"
+  sha256 "1edc3edbfa29893f16962f9660593b967d74d78f03d19492cb449a161941de98"
   license "MIT"
 
   depends_on :macos
   depends_on arch: :arm64
+
+  # Mutual exclusion lives here only — brew deprecated conflicts_with formula: in casks
+  # (brew PR #20499, no replacement). Don't delete this thinking the cask handles it: it can't.
+  conflicts_with cask: "runny-app"
 
   def install
     bin.install "runnyd"
     bin.install "runnyctl"
   end
 
-  # `brew services start runny` (NO sudo) loads this as a per-user LaunchAgent
-  # in the GUI session — the only context where macOS grants the Local Network
-  # permission runnyd needs to reach its guests. `sudo brew services` would
-  # install a LaunchDaemon, which is silently denied vmnet access. KeepAlive is
-  # load-bearing for the wedge restart (ADR-0012). See docs/deploy.md.
-  service do
-    run [opt_bin/"runnyd"]
-    keep_alive true
-    run_type :immediate
-    environment_variables RUNNY_HOME: "#{Dir.home}/.runny"
-    log_path "#{Dir.home}/.runny/logs/launchd.out.log"
-    error_log_path "#{Dir.home}/.runny/logs/launchd.err.log"
-  end
+  # This formula is delivery-only: it installs the binaries, not a service. A
+  # `brew services` block can only create a per-user LaunchAgent (Homebrew's DSL
+  # has no run-as-user field), and the headless install is a non-root system
+  # LaunchDaemon — created by `runnyctl install-daemon`, which needs the
+  # privileged dscl/launchctl steps a formula can't perform. See docs/deploy.md.
 
   def caveats
     <<~TEXT
-      runnyd boots guests on Virtualization.framework and reaches them over the
-      local network. Two things gate a working install:
+      MIGRATION REQUIRED if you previously ran runnyd via `brew services start runny`:
+      that path no longer works. This formula delivers the runnyd and runnyctl
+      binaries only — it registers no service.
 
-        1. The binary ships signed with com.apple.security.virtualization.
-        2. macOS Local Network permission. Start runnyd from a GUI login
-           session without sudo, so it runs as a LaunchAgent:
+      Choose one supported path:
 
-               brew services start runny
+        Headless / server host:
+            sudo runnyctl install-daemon
+            $EDITOR "/Library/Application Support/runny/config.yaml"
 
-           then accept the one-time "Local Network" prompt. A LaunchDaemon
-           (sudo) or a backgrounded runnyd is silently denied vmnet access.
+        Desktop / per-user:
+            Open Runny.app, then Settings -> Daemon -> "Start runnyd at login"
 
-      Write ~/.runny/config.yaml first; verify with `runnyd -doctor`.
+      If an old `brew services`-managed runnyd is still registered, remove it:
+          brew services stop runny 2>/dev/null
+          launchctl bootout gui/$(id -u)/com.coderinserepeat.runnyd 2>/dev/null
+          rm -f ~/Library/LaunchAgents/homebrew.mxcl.runny.plist
+
+      A launchd-started runnyd of any uid is auto-allowed Local Network access —
+      no GUI prompt. See the runny deploy docs for full migration instructions.
     TEXT
   end
 
