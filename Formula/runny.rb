@@ -8,17 +8,19 @@
 class Runny < Formula
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
-  version "1.0.2"
-  url "https://github.com/bojanrajkovic/runny/releases/download/v1.0.2/runny_1.0.2_darwin_arm64.tar.gz"
-  sha256 "5ad91da1998b1a5a74be402dfefdb09b51278a94fafffc71d0a0f263f92846aa"
+  version "1.1.0"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.1.0/runny_1.1.0_darwin_arm64.tar.gz"
+  sha256 "f91cd6e1482988785085f18afc7a70b7003c0ef459dc867da5e31d66eab89349"
   license "MIT"
 
   depends_on :macos
   depends_on arch: :arm64
 
-  # Mutual exclusion lives here only — brew deprecated conflicts_with formula: in casks
-  # (brew PR #20499, no replacement). Don't delete this thinking the cask handles it: it can't.
+  conflicts_with "runny-beta", because: "both install the runnyd and runnyctl binaries"
+  # Mutual exclusion vs. casks lives here only — brew deprecated conflicts_with formula: in
+  # casks (brew PR #20499, no replacement). Don't delete this thinking the cask handles it: it can't.
   conflicts_with cask: "runny-app"
+  conflicts_with cask: "runny-app-beta"
 
   def install
     bin.install "runnyd"

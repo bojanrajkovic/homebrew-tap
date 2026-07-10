@@ -3,10 +3,10 @@
 # the next release overwrites it. version, url, and sha256 are filled in by
 # the workflow from the package step's own checksum, never a re-download.
 cask "runny-app" do
-  version "1.0.2"
-  sha256 "ae31039861e7e290b3447cff52845b8e79aa218d31a82d9037abf16477992833"
+  version "1.1.0"
+  sha256 "6abffe66077a829e2f3e32537ffe781993f4e62d34fd83e7f5acfbc57876b8f2"
 
-  url "https://github.com/bojanrajkovic/runny/releases/download/v1.0.2/Runny_1.0.2.dmg"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.1.0/Runny_1.1.0.dmg"
   name "Runny"
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
@@ -25,7 +25,10 @@ cask "runny-app" do
   # (conflicts_with cask: "runny-app"). The reverse direction (formula present → cask
   # install blocked) is enforced by the preflight below.
   preflight do
-    odie "The `runny` formula is already installed. Run 'brew uninstall runny' first." if (HOMEBREW_PREFIX/"bin/runnyd").exist?
+    if (HOMEBREW_PREFIX/"bin/runnyd").exist?
+      odie "A `runny` or `runny-beta` formula install is already present. Run " \
+           "'brew uninstall runny' or 'brew uninstall runny-beta' first."
+    end
   end
 
   uninstall quit:      "com.coderinserepeat.runny",      # app bundle id
