@@ -11,10 +11,10 @@
 # brew's own "an App already exists at that path" guard catches that; no
 # extra preflight needed here beyond the formula check below.
 cask "runny-app-beta" do
-  version "1.2.0-beta.45.42ff2e66"
-  sha256 "17bb3b5abb3a391d4b66f0bbad0b8e9d7acb3bc08f03db38960b0d9095fe6582"
+  version "1.2.0-beta.47.0cc3a747"
+  sha256 "066f903a5374055158da910288eecd17888cce956242d24846777519a132e35d"
 
-  url "https://github.com/bojanrajkovic/runny/releases/download/v1.2.0-beta.45.42ff2e66/Runny_1.2.0-beta.45.42ff2e66.dmg"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.2.0-beta.47.0cc3a747/Runny_1.2.0-beta.47.0cc3a747.dmg"
   name "Runny (Beta)"
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework (beta channel)"
   homepage "https://github.com/bojanrajkovic/runny"
