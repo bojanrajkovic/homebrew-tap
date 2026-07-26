@@ -14,9 +14,9 @@
 class RunnyBeta < Formula
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework (beta channel)"
   homepage "https://github.com/bojanrajkovic/runny"
-  version "1.2.0-beta.8380a10f"
-  url "https://github.com/bojanrajkovic/runny/releases/download/v1.2.0-beta.8380a10f/runny_1.2.0-beta.8380a10f_darwin_arm64.tar.gz"
-  sha256 "6e0c1375db7ab622e0963f3f03389d057660afe288538aa46ec4bbe430037b6a"
+  version "1.2.0-beta.69d743dd"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.2.0-beta.69d743dd/runny_1.2.0-beta.69d743dd_darwin_arm64.tar.gz"
+  sha256 "efbc11f2bea3a4c304eeadafde17169665fae4af76fc17f036154c4753ed53f5"
   license "MIT"
 
   depends_on :macos
