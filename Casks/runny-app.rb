@@ -3,10 +3,10 @@
 # the next release overwrites it. version, url, and sha256 are filled in by
 # the workflow from the package step's own checksum, never a re-download.
 cask "runny-app" do
-  version "1.1.0"
-  sha256 "6abffe66077a829e2f3e32537ffe781993f4e62d34fd83e7f5acfbc57876b8f2"
+  version "1.2.0"
+  sha256 "0aab4f1d40003ac4faf7c884a35233cf518fbb6175e31c199cbae392978054fe"
 
-  url "https://github.com/bojanrajkovic/runny/releases/download/v1.1.0/Runny_1.1.0.dmg"
+  url "https://github.com/bojanrajkovic/runny/releases/download/v1.2.0/Runny_1.2.0.dmg"
   name "Runny"
   desc "Observable macOS GitHub Actions runner daemon on Virtualization.framework"
   homepage "https://github.com/bojanrajkovic/runny"
